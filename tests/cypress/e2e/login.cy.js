@@ -1,3 +1,7 @@
+import loginPage from '../support/pages/Login'
+import mapPage from '../support/pages/Map'
+
+
 describe('Login', () => {
   it('deve logar com sucesso', () => {
     const user = {
@@ -5,10 +9,10 @@ describe('Login', () => {
       instagram: '@f.frazzon',
       password: 'pwd123'
     }
-    cy.loginVisit()
-    cy.login(user)
-    cy.loginButton()
-    cy.loggedUser(user.name)
+    loginPage.go()
+    loginPage.form(user)
+    loginPage.submit()
+    mapPage.loggedUser(user.name)
   })
 
   it('nao deve logar com senha invalida', () => {
@@ -16,10 +20,12 @@ describe('Login', () => {
       instagram: '@f.frazzon',
       password: '123456'
     }
-    cy.loginVisit()
-    cy.login(user)
-    cy.loginButton()
-    cy.modalHaveText('Credenciais inválidas, tente novamente!')
+    loginPage.go()
+    loginPage.form(user)
+    loginPage.submit()
+    loginPage.modal
+      .haveText('Credenciais inválidas, tente novamente!')
+
   })
 
   it('nao deve logar instagram inexistente', () => {
@@ -27,36 +33,41 @@ describe('Login', () => {
       instagram: '@ffrazzon.f',
       password: 'pwd123'
     }
-    cy.loginVisit()
-    cy.login(user)
-    cy.loginButton()
-    cy.modalHaveText('Credenciais inválidas, tente novamente!')
+    loginPage.go()
+    loginPage.form(user)
+    loginPage.submit()
+    loginPage.modal
+      .haveText('Credenciais inválidas, tente novamente!')
   })
 
   it('instagram é obrigatório', () => {
     const user = {
       password: 'pwd123'
     }
-    cy.loginVisit()
-    cy.loginRequired(user)
-    cy.loginButton()
-    cy.modalHaveText('Por favor, informe o seu código do Instagram!')
+    loginPage.go()
+    loginPage.form(user)
+    loginPage.submit()
+    loginPage.modal
+      .haveText('Por favor, informe o seu código do Instagram!')
   })
 
   it('senha é obrigatória', () => {
     const user = {
       instagram: '@f.frazzon',
     }
-    cy.loginVisit()
-    cy.passwordRequired(user)
-    cy.loginButton()
-    cy.modalHaveText('Por favor, informe a sua senha secreta!')
+    loginPage.go()
+    loginPage.form(user)
+    loginPage.submit()
+    loginPage.modal
+      .haveText('Por favor, informe a sua senha secreta!')
   })
 
   it('todos os campos são obrigatórios', () => {
-    cy.loginVisit()
-    cy.loginButton()
-    cy.modalHaveText('Por favor, informe suas credenciais!')
+
+    loginPage.go()
+    loginPage.submit()
+    loginPage.modal
+      .haveText('Por favor, informe suas credenciais!')
   })
 
 })
