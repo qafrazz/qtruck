@@ -1,5 +1,2 @@
-/backend
-/frontend
 node_modules
-yarn.lock
-yarn-error.log
+downloads
