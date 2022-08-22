@@ -9,17 +9,32 @@ describe('Signup', () => {
       password: 'pwd123'
     }
 
-    cy.deleteMany({ instagram: user.instagram }, { collection: 'users'}).then(res => {
-      cy.log(res);
-    });
+    // cy.deleteMany({ instagram: user.instagram }, { collection: 'users'}).then(res => {
+    //   cy.log(res);
+    // });
+    cy.apiResetUser(user.instagram)
+    signupPage.go()
+    signupPage.form(user)
+    signupPage.submit()
+    signupPage.modal
+      .haveText('Agora você pode recomendar e/ou avaliar Food trucks.')
+
+  });
+
+  it.only('não deve cadastrar se já existe cadastro ', () => {
+    const user = {
+      name: 'Erick Jacquin',
+      instagram: '@jacquin',
+      password: 'pwd123'
+    }
+
+    cy.apiCreateUser(user)
 
     signupPage.go()
     signupPage.form(user)
     signupPage.submit()
-
     signupPage.modal
-      .haveText('Agora você pode recomendar e/ou avaliar Food trucks.')
-
+      .haveText('Instagram já cadastrado!')
   });
 
 });
