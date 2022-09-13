@@ -9,10 +9,7 @@ describe('Login', () => {
       instagram: '@f.frazzon',
       password: 'pwd123'
     }
-    loginPage.go()
-    loginPage.form(user)
-    loginPage.submit()
-    mapPage.loggedUser(user.name)
+    cy.uiLogin(user)
   })
 
   it('nao deve logar com senha invalida', () => {
